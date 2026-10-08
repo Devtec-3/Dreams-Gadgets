@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Receipt {
+  id            String   @id @default(cuid())
+  receiptNo     String   @unique
+  customerName  String
+  customerEmail String?
+  status        String   @default("Paid")
+  items         Json
+  deliveryFee   Float    @default(0)
+  discount      Float    @default(0)
+  total         Float
+  bankName      String
+  accountNumber String
+  accountName   String
+  deliveryType  String   @default("Pickup")
+  address       String?
+  createdAt     DateTime @default(now())
+}
+
+// Single row (id = "app") holding the owner's hashed password
+model PasswordSetting {
+  id           String   @id @default("app")
+  passwordHash String
+  updatedAt    DateTime @updatedAt
+}
+
+// One-time codes for forgot-password, sent to the company email
+model PasswordResetCode {
+  id        String   @id @default(cuid())
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --background: #eef1f6;
+  --foreground: #1a2233;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+/* Hide everything except the receipt when printing / saving as PDF */
+@media print {
+  body {
+    background: #ffffff;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .receipt-doc {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 24px !important;
+  }
+  @page {
+    margin: 8mm;
+  }
+}
