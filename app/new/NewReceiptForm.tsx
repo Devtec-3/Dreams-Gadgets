@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { formatNaira, ReceiptItem, SHOP } from "@/lib/format";
+import { formatNaira, OFFICES, ReceiptItem, SHOP } from "@/lib/format";
 
 const emptyItem: ReceiptItem = {
   name: "",
@@ -31,7 +31,9 @@ export default function NewReceiptPage() {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [deliveryType, setDeliveryType] = useState("Pickup");
-  const [address, setAddress] = useState("");
+  const [office, setOffice] = useState<keyof typeof OFFICES | "Other">("Lagos");
+  const [customAddress, setCustomAddress] = useState("");
+  const address = office === "Other" ? customAddress : OFFICES[office].address;
 
   const productsTotal = items.reduce((s, it) => s + (it.qty || 0) * (it.unitPrice || 0), 0);
   const total = productsTotal + (deliveryFee || 0) - (discount || 0);
@@ -236,9 +238,23 @@ export default function NewReceiptPage() {
               </select>
             </div>
             <div className="mt-4">
-              <label className={labelCls}>Address</label>
-              <input className={inputCls} value={address} onChange={(e) => setAddress(e.target.value)} placeholder="e.g. Computer village, Ikeja, Lagos" />
+              <label className={labelCls}>Address on receipt</label>
+              <select
+                className={inputCls}
+                value={office}
+                onChange={(e) => setOffice(e.target.value as keyof typeof OFFICES | "Other")}
+              >
+                <option value="Lagos">{OFFICES.Lagos.label}</option>
+                <option value="Kwara">{OFFICES.Kwara.label}</option>
+                <option value="Other">Other / custom address</option>
+              </select>
             </div>
+            {office === "Other" && (
+              <div className="mt-4">
+                <label className={labelCls}>Custom address</label>
+                <input className={inputCls} value={customAddress} onChange={(e) => setCustomAddress(e.target.value)} placeholder="e.g. customer's delivery address" />
+              </div>
+            )}
             <div className="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4 text-xs leading-5 text-slate-600">
               <div className="mb-1 text-sm font-semibold text-slate-900">Bank details on receipt</div>
               <div className="font-medium">{SHOP.bankName}</div>

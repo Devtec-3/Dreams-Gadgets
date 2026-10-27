@@ -48,6 +48,18 @@ export interface ReceiptItem {
   unitPrice: number;
 }
 
+// Offices selectable on the "New Receipt" form (printed in the Delivery box)
+export const OFFICES: Record<"Lagos" | "Kwara", { label: string; address: string }> = {
+  Lagos: {
+    label: "Lagos office (Ikeja)",
+    address: "Shop S25, Tairas Plaza, Oshitelu Street, Computer Village, Ikeja, Lagos",
+  },
+  Kwara: {
+    label: "Kwara office (Ilorin)",
+    address: "Shop 85, Computer Village Phase 2, Matanmi Complex, Challenge, Ilorin",
+  },
+};
+
 export const SHOP = {
   name: "Dreams Gadgets",
   tagline: "…Smart gadgets for smarter living",
